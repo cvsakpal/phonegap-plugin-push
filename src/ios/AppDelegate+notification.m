@@ -11,7 +11,6 @@
 #import <objc/runtime.h>
 
 static char launchNotificationKey;
-
 @implementation AppDelegate (notification)
 
 - (id) getCommandInstance:(NSString*)className
