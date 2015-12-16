@@ -134,6 +134,32 @@ PushNotification.prototype.getApplicationIconBadgeNumber = function(successCallb
 };
 
 /**
+ * Subscribe to a topic
+ * @param topics, an array of topics that may not be empty
+ * @throws an error if not all parameters are provided or the plugin fails during the subscription
+ */
+PushNotification.prototype.subscribeToTopics = function (successCallback, errorCallback, topics) {
+    if(!topics || topics[0] == null){
+        throw new Error("Please provide at least one topic.")
+    }else{
+        exec(successCallback, errorCallback, "PushNotification", "subscribe", [{topics: topics}]);
+    };
+};
+
+/**
+ * Unsubscribe from a topic
+ * @param topics, an array of topics that may not be empty
+ * @throws an error if not all parameters are provided or the plugin fails during the unsubscription
+ */
+PushNotification.prototype.unsubscribeFromTopics = function (successCallback, errorCallback, topics) {
+    if(!topics || topics[0] == null){
+        throw new Error("Please provide at least one topic.")
+    }else{
+        exec(successCallback, errorCallback, "PushNotification", "unsubscribe", [{topics: topics}]);
+    };
+};
+
+/**
  * Listen for an event.
  *
  * The following events are supported:
