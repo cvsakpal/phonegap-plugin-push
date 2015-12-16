@@ -151,6 +151,42 @@ public class PushPlugin extends CordovaPlugin implements PushConstants {
                 }
             }
             });
+        } else if (SUBSCRIBE.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    try {
+                        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(COM_ADOBE_PHONEGAP_PUSH, Context.MODE_PRIVATE);
+                        String token = sharedPref.getString(REGISTRATION_ID, "");
+                        JSONObject options = data.optJSONObject(0);
+                        JSONArray topics = options.optJSONArray("topics");
+                        
+                        subscribeToTopics(topics, token);
+
+                        callbackContext.success();
+                    } catch (UnknownError e) {
+                        Log.e(LOG_TAG, "execute: Got JSON Exception " + e.getMessage());
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+            });
+        } else if (UNSUBSCRIBE.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    try {
+                        SharedPreferences sharedPref = getApplicationContext().getSharedPreferences(COM_ADOBE_PHONEGAP_PUSH, Context.MODE_PRIVATE);
+                        String token = sharedPref.getString(REGISTRATION_ID, "");
+                        JSONObject options = data.optJSONObject(0);
+                        JSONArray topics = options.optJSONArray("topics");
+                        
+                        unsubscribeFromTopics(topics, token);
+
+                        callbackContext.success();
+                    } catch (UnknownError e) {
+                        Log.e(LOG_TAG, "execute: Got JSON Exception " + e.getMessage());
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+            });
         } else if (FINISH.equals(action)) {
             callbackContext.success();
         } else {
